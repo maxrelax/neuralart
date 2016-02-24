@@ -30,6 +30,7 @@ cmd:option('--init',            'image',  '{image, random}. Initialization mode 
 cmd:option('--backend',         'cunn',   '{cunn, cudnn}. Neural network CUDA backend.')
 cmd:option('--optimizer',       'lbfgs',  '{sgd, lbfgs}. Optimization algorithm.')
 cmd:option('--cpu',              false,   'Optimize on CPU (only with VGG network).')
+cmd:option('--gpu',              1,       'GPU device to target (starts at 1+)')
 cmd:option('--output_dir',      'frames', 'Output directory to save to.' )
 opt = cmd:parse(arg)
 if opt.size <= 0 then
@@ -40,6 +41,9 @@ if not opt.cpu then
     require 'cutorch'
     require 'cunn'
 end
+
+
+cutorch.setDevice(opts.gpu)
 
 paths.dofile('models/util.lua')
 paths.dofile('models/vgg19.lua')
