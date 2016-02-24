@@ -24,14 +24,14 @@ cmd:option('--content',         'none',   'Path to content image')
 cmd:option('--style_factor',     2e9,     'Trade-off factor between style and content')
 cmd:option('--num_iters',        500,     'Number of iterations')
 cmd:option('--size',             500,     'Length of image long edge (0 to use original content size)')
-cmd:option('--display_interval', 20,      'Iterations between image displays (0 to suppress display)')
+cmd:option('--display_interval', 0,      'Iterations between image displays (0 to suppress display)')
 cmd:option('--smoothness',       0,       'Total variation norm regularization strength (higher for smoother output)')
 cmd:option('--init',            'image',  '{image, random}. Initialization mode for optimized image.')
-cmd:option('--backend',         'cunn',   '{cunn, cudnn}. Neural network CUDA backend.')
+cmd:option('--backend',         'cudnn',   '{cunn, cudnn}. Neural network CUDA backend.')
 cmd:option('--optimizer',       'lbfgs',  '{sgd, lbfgs}. Optimization algorithm.')
 cmd:option('--cpu',              false,   'Optimize on CPU (only with VGG network).')
-cmd:option('--gpu',              1,       'GPU device to target (starts at 1+)')
-cmd:option('--output_dir',      'frames', 'Output directory to save to.' )
+cmd:option('--gpu',              2,       'GPU device to target (starts at 1+)')
+cmd:option('--output_dir',      'out', 'Output directory to save to.' )
 opt = cmd:parse(arg)
 if opt.size <= 0 then
     opt.size = nil
@@ -43,7 +43,7 @@ if not opt.cpu then
 end
 
 
-cutorch.setDevice(opts.gpu)
+cutorch.setDevice(opt.gpu)
 
 paths.dofile('models/util.lua')
 paths.dofile('models/vgg19.lua')
